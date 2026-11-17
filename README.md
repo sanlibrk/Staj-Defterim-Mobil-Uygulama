@@ -23,11 +23,12 @@ Staj Defteri, öğrencilerin staj bilgilerini ve günlük çalışmalarını kay
 
 | Kapsam | Sonuç |
 | --- | --- |
-| Swift paket testleri | Linux üzerinde **7/7 geçti**. Kayıtları yeniden açma, düzenleme, silme, yazma hatasından sonra tekrar deneme, takvim tarihi, DOCX yapısı ve güncel kayıtlardan dışa aktarım sınandı. |
+| Swift paket testleri | Linux ve GitHub'ın macOS çalıştırıcısında **7/7 geçti**. Kayıtları yeniden açma, düzenleme, silme, yazma hatasından sonra tekrar deneme, takvim tarihi, DOCX yapısı ve güncel kayıtlardan dışa aktarım sınandı. |
 | Microsoft Word | Swift'in ürettiği örnek DOCX Windows'ta Word ile açıldı. Kapak ve iki günlük üç sayfada görüntülendi. Gömülü fotoğraflar ve açıklamalar incelendi. Günlük metni düzenlendi ve yeniden açıldığında değişikliğin korunduğu doğrulandı. |
-| iOS | Xcode proje dosyası ve Swift kaynaklarının sözdizimi statik olarak kontrol edildi. Mac tabanlı CI iş akışı Swift testlerini, iOS arşiv derlemesini ve simülatörde uygulamayı başlatmayı kapsar. Kamera izin akışı gerçek cihazda doğrulanır. |
+| iOS arşiv derlemesi | Xcode ile imzasız iOS Release arşivi oluşturuldu. Arşivdeki uygulama bilgileri ve varlık kataloğu kontrol edildi. |
+| iPhone simülatörü | iPhone 17 simülatöründe Debug derlemesi kuruldu, başlatıldı ve açılışın ardından çalıştığı doğrulandı. Fiziksel cihaz kontrolleri aşağıdadır. |
 
-[Swift testleri](Tests/StajDefteriCoreTests) · [iOS CI iş akışı](.github/workflows/ios.yml)
+[Swift testleri](Tests/StajDefteriCoreTests) · [iOS CI sonuçları](https://github.com/sanlibrk/Staj-Defterim-Mobil-Uygulama/actions/workflows/ios.yml)
 
 ## Yerelde çalıştırma
 
@@ -46,6 +47,15 @@ Platformdan bağımsız çekirdek testlerini depo kökünden çalıştırın.
 ```sh
 swift test
 ```
+
+## Sürüm öncesi cihaz kontrolü
+
+- [ ] Uçak modunda bir staj ve iki farklı tarihte günlük oluşturun. Dört metin alanını doldurun, fotoğraf ve açıklama ekleyin. Uygulamayı tamamen kapatıp açtıktan sonra kayıtları yeniden açın.
+- [ ] Bir günlük ve fotoğraf açıklamasını düzenleyin. Bir fotoğrafı, bir günlüğü ve ayrı bir deneme stajını silin. Uygulamayı yeniden açıp değişikliklerin korunduğunu kontrol edin.
+- [ ] Fotoğraf seçicide birden çok görsel seçin ve ayrı bir denemede seçimi iptal edin. Eklerin seçiminizle eşleştiğini doğrulayın.
+- [ ] Gerçek iPhone'da ilk kamera isteğini reddedin. Günlük kaydının ve fotoğraf seçicinin kullanılabildiğini kontrol edin. Ardından Ayarlar'dan izin verip bir fotoğraf çekin ve günlüğe kaydedin.
+- [ ] İki günlük içeren bir DOCX'i iOS paylaşım ekranından Dosyalar'a kaydedin. Word'de tarihlerin yeni sayfalardan başladığını, görsellerin ve açıklamaların doğru güne ait olduğunu ve metnin düzenlenip yeniden kaydedilebildiğini kontrol edin.
+- [ ] iPad'de dikey ve yatay görünümü, desteklenen iOS sürümlerinde temel akışları, büyük metin boyutunu ve VoiceOver'ı kontrol edin.
 
 ## English summary
 
