@@ -1,4 +1,4 @@
-name: App Store iPad screenshot
+name: App Store screenshots
 
 on:
   push:
@@ -10,55 +10,106 @@ permissions:
 
 jobs:
   capture:
-    runs-on: macos-15-intel
-    timeout-minutes: 15
+    runs-on: macos-26
+    timeout-minutes: 18
     env:
-      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Select and boot iPad Pro 13-inch simulator
+      - name: Select and boot the iPhone and iPad simulators
         run: |
-          device="$(xcrun simctl list -j devices available | jq -er '
-            .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-2"]
-            | map(select(.name == "iPad Pro 13-inch (M5)" and .isAvailable))
-            | first | .udid
-          ')"
-          echo "DEVICE=$device" >> "$GITHUB_ENV"
-          xcrun simctl boot "$device"
+          device_for() {
+            xcrun simctl list -j devices available | jq -er --arg name "$1" '
+              .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
+              | map(select(.name == $name and .isAvailable))
+              | first | .udid
+            '
+          }
+          iphone="$(device_for 'iPhone 17')"
+          ipad="$(device_for 'iPad Pro 13-inch (M5)')"
+          echo "IPHONE=$iphone" >> "$GITHUB_ENV"
+          echo "IPAD=$ipad" >> "$GITHUB_ENV"
+          xcrun simctl boot "$iphone"
 
-      - name: Build and capture Staj Defteri
+      - name: Build app and verify actual in-app captures
         run: |
           build="$RUNNER_TEMP/staj-build"
           xcodebuild build \
             -project StajDefteri.xcodeproj -scheme StajDefteri \
-            -configuration Debug -destination "platform=iOS Simulator,id=$DEVICE" \
+            -configuration Debug -destination "platform=iOS Simulator,id=$IPHONE" \
             -derivedDataPath "$build" CODE_SIGN_IDENTITY=-
 
           app="$build/Build/Products/Debug-iphonesimulator/StajDefteri.app"
           bundle_id="$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Info.plist")"
-          xcrun simctl bootstatus "$DEVICE" -b
-          xcrun simctl ui "$DEVICE" appearance light
-          xcrun simctl status_bar "$DEVICE" override --time "9:41" --wifiMode active --wifiBars 3 --batteryState unplugged --batteryLevel 100
-          xcrun simctl install "$DEVICE" "$app"
-          container="$(xcrun simctl get_app_container "$DEVICE" "$bundle_id" data)"
-          folder="$container/Library/Application Support/StajDefteri"
-          mkdir -p "$folder" "$RUNNER_TEMP/staj-store"
-          cat > "$folder/journal.json" <<'JSON'
-          {"version":1,"internships":[{"id":"09407D82-8C9B-47A2-B15C-31FEDB8B6DA1","studentName":"Deniz Kaya","school":"Örnek Teknik Üniversite","department":"Makine Mühendisliği","studentNumber":"20260001","workplace":"Üretim Atölyesi","startDate":"2026-11-02","endDate":"2026-11-27","entries":[]},{"id":"6605824F-8410-427F-8EC5-D85FAA688770","studentName":"Deniz Kaya","school":"Örnek Teknik Üniversite","department":"Makine Mühendisliği","studentNumber":"20260001","workplace":"Tasarım Laboratuvarı","startDate":"2026-07-06","endDate":"2026-07-31","entries":[]}]}
+          output="$RUNNER_TEMP/staj-store"
+          mkdir -p "$output"
+          cat > "$RUNNER_TEMP/VerifyCapture.swift" <<'SWIFT'
+          import Foundation
+          import Vision
+
+          let image = URL(fileURLWithPath: CommandLine.arguments[1])
+          let request = VNRecognizeTextRequest()
+          request.recognitionLevel = .accurate
+          request.usesLanguageCorrection = false
+          try VNImageRequestHandler(url: image).perform([request])
+          let text = request.results?.compactMap { $0.topCandidates(1).first?.string }.joined(separator: " ") ?? ""
+          print("Detected simulator text:", text)
+          guard text.localizedCaseInsensitiveContains("Mavi Lab"),
+                text.localizedCaseInsensitiveContains("Ada Teknik") else { exit(1) }
+          SWIFT
+          xcrun swiftc "$RUNNER_TEMP/VerifyCapture.swift" -o "$RUNNER_TEMP/verify-capture"
+
+          capture() {
+            local device="$1" filename="$2" result pid container folder
+            local candidate="$RUNNER_TEMP/$filename"
+            xcrun simctl bootstatus "$device" -b
+            xcrun simctl ui "$device" appearance light
+            xcrun simctl status_bar "$device" override --time "9:41" --wifiMode active --wifiBars 3 --batteryState unplugged --batteryLevel 100
+            xcrun simctl install "$device" "$app"
+            container="$(xcrun simctl get_app_container "$device" "$bundle_id" data)"
+            folder="$container/Library/Application Support/StajDefteri"
+            mkdir -p "$folder"
+            cat > "$folder/journal.json" <<'JSON'
+          {"version":1,"internships":[{"id":"09407D82-8C9B-47A2-B15C-31FEDB8B6DA1","studentName":"Deniz Kaya","school":"Örnek Teknik Üniversite","department":"Makine Mühendisliği","studentNumber":"20260001","workplace":"Mavi Lab","startDate":"2026-11-02","endDate":"2026-11-27","entries":[]},{"id":"6605824F-8410-427F-8EC5-D85FAA688770","studentName":"Deniz Kaya","school":"Örnek Teknik Üniversite","department":"Makine Mühendisliği","studentNumber":"20260001","workplace":"Ada Teknik","startDate":"2026-07-06","endDate":"2026-07-31","entries":[]}]}
           JSON
-          xcrun simctl launch "$DEVICE" "$bundle_id" -AppleLanguages '(tr)' -AppleLocale tr_TR
-          sleep 4
-          shot="$RUNNER_TEMP/staj-store/Staj-Defteri-iPad-13.png"
-          xcrun simctl io "$DEVICE" screenshot "$shot"
-          sips -g pixelWidth -g pixelHeight -g hasAlpha "$shot"
+            result="$(xcrun simctl launch --terminate-running-process "$device" "$bundle_id" -AppleLanguages '(tr)' -AppleLocale tr_TR)"
+            echo "$result"
+            pid="${result##*: }"
+            [[ "$pid" =~ ^[0-9]+$ ]]
+            for attempt in {1..8}; do
+              sleep 4
+              if ! kill -0 "$pid"; then
+                echo "App exited before the in-app screenshot."
+                break
+              fi
+              xcrun simctl io "$device" screenshot "$candidate"
+              if "$RUNNER_TEMP/verify-capture" "$candidate"; then
+                mv "$candidate" "$output/$filename"
+                sips -g pixelWidth -g pixelHeight -g hasAlpha "$output/$filename"
+                return
+              fi
+            done
+            xcrun simctl spawn "$device" log show --style compact --last 2m \
+              --predicate 'process == "StajDefteri" OR (process == "SpringBoard" AND eventMessage CONTAINS[c] "stajdefteri")' \
+              | tail -n 60 || true
+            return 1
+          }
+
+          status=0
+          capture "$IPHONE" Staj-Defteri-iPhone-17.png || status=1
+          xcrun simctl shutdown "$IPHONE"
+          xcrun simctl boot "$IPAD"
+          capture "$IPAD" Staj-Defteri-iPad-13.png || status=1
+          exit "$status"
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
         with:
-          name: staj-defteri-ipad-13
-          path: ${{ runner.temp }}/staj-store/Staj-Defteri-iPad-13.png
-          if-no-files-found: error
+          name: staj-defteri-app-store-screens
+          path: ${{ runner.temp }}/staj-store/*.png
+          if-no-files-found: warn
           retention-days: 7
