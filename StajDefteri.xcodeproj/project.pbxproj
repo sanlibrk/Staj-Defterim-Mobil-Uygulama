@@ -13,7 +13,18 @@
 		5DE100000000000000000015 /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000025 /* ExportView.swift */; };
 		5DE100000000000000000017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000028 /* Assets.xcassets */; };
 		5DE100000000000000000018 /* StajDefteriCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5DE100000000000000000081 /* StajDefteriCore */; };
+		5DE100000000000000000019 /* PreviewCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE10000000000000000002A /* PreviewCaptureTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5DE100000000000000000053 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5DE100000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5DE100000000000000000051;
+			remoteInfo = StajDefteri;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		5DE100000000000000000021 /* StajDefteriApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StajDefteriApp.swift; sourceTree = "<group>"; };
@@ -25,6 +36,8 @@
 		5DE100000000000000000027 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		5DE100000000000000000028 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DE100000000000000000029 /* StajDefteri.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StajDefteri.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DE10000000000000000002A /* PreviewCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCaptureTests.swift; sourceTree = "<group>"; };
+		5DE10000000000000000002B /* StajDefteriUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StajDefteriUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +45,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (5DE100000000000000000018 /* StajDefteriCore in Frameworks */);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DE100000000000000000045 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -42,6 +61,7 @@
 			children = (
 				5DE100000000000000000032 /* App */,
 				5DE100000000000000000033 /* Resources */,
+				5DE100000000000000000035 /* StajDefteriUITests */,
 				5DE100000000000000000034 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,8 +92,14 @@
 		};
 		5DE100000000000000000034 /* Products */ = {
 			isa = PBXGroup;
-			children = (5DE100000000000000000029 /* StajDefteri.app */);
+			children = (5DE100000000000000000029 /* StajDefteri.app */, 5DE10000000000000000002B /* StajDefteriUITests.xctest */);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5DE100000000000000000035 /* StajDefteriUITests */ = {
+			isa = PBXGroup;
+			children = (5DE10000000000000000002A /* PreviewCaptureTests.swift */);
+			path = StajDefteriUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,6 +121,17 @@
 			productReference = 5DE100000000000000000029 /* StajDefteri.app */;
 			productType = "com.apple.product-type.application";
 		};
+		5DE100000000000000000052 /* StajDefteriUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5DE100000000000000000073 /* Build configuration list for PBXNativeTarget "StajDefteriUITests" */;
+			buildPhases = (5DE100000000000000000044 /* Sources */, 5DE100000000000000000045 /* Frameworks */, 5DE100000000000000000046 /* Resources */);
+			buildRules = ();
+			dependencies = (5DE100000000000000000054 /* PBXTargetDependency */);
+			name = StajDefteriUITests;
+			productName = StajDefteriUITests;
+			productReference = 5DE10000000000000000002B /* StajDefteriUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -108,6 +145,10 @@
 					5DE100000000000000000051 = {
 						CreatedOnToolsVersion = 15.0;
 					};
+					5DE100000000000000000052 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 5DE100000000000000000051;
+					};
 				};
 			};
 			buildConfigurationList = 5DE100000000000000000071 /* Build configuration list for PBXProject "StajDefteri" */;
@@ -120,7 +161,7 @@
 			productRefGroup = 5DE100000000000000000034 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			targets = (5DE100000000000000000051 /* StajDefteri */);
+			targets = (5DE100000000000000000051 /* StajDefteri */, 5DE100000000000000000052 /* StajDefteriUITests */);
 		};
 /* End PBXProject section */
 
@@ -131,6 +172,12 @@
 			files = (
 				5DE100000000000000000017 /* Assets.xcassets in Resources */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5DE100000000000000000046 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
@@ -148,7 +195,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5DE100000000000000000044 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (5DE100000000000000000019 /* PreviewCaptureTests.swift in Sources */);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5DE100000000000000000054 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5DE100000000000000000051 /* StajDefteri */;
+			targetProxy = 5DE100000000000000000053 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5DE100000000000000000061 /* Project Debug */ = {
@@ -218,6 +279,40 @@
 			};
 			name = Release;
 		};
+		5DE100000000000000000065 /* UI Tests Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@loader_path/Frameworks");
+				PRODUCT_BUNDLE_IDENTIFIER = com.sanlibrk.stajdefteri.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = StajDefteri;
+			};
+			name = Debug;
+		};
+		5DE100000000000000000066 /* UI Tests Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks", "@loader_path/Frameworks");
+				PRODUCT_BUNDLE_IDENTIFIER = com.sanlibrk.stajdefteri.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = StajDefteri;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -230,6 +325,12 @@
 		5DE100000000000000000072 /* Build configuration list for PBXNativeTarget "StajDefteri" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (5DE100000000000000000063, 5DE100000000000000000064);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DE100000000000000000073 /* Build configuration list for PBXNativeTarget "StajDefteriUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (5DE100000000000000000065 /* UI Tests Debug */, 5DE100000000000000000066 /* UI Tests Release */);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
