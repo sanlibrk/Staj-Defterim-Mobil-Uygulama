@@ -316,7 +316,7 @@ private struct PhotoEditor: View {
 
 private extension Binding where Value == LocalDate {
     var dateValue: Binding<Date> {
-        Binding(get: { wrappedValue.date }, set: { wrappedValue = LocalDate($0) })
+        Binding<Date>(get: { wrappedValue.date }, set: { wrappedValue = LocalDate($0) })
     }
 }
 
