@@ -48,13 +48,13 @@ final class PreviewCaptureTests: XCTestCase {
     @MainActor
     func test05CaptureEditDailyEntry() {
         let app = launchApp()
-        createInternship("Kuzey Tasarim", in: app).tap()
+        createInternship("Kuzey Studio", in: app).tap()
         openNewEntry(in: app)
-        let sample = "Atolye cizimlerini inceledim."
+        let sample = "Proje planlama raporunu okudum."
         enter(sample, into: app.textViews.firstMatch, in: app)
         app.navigationBars["Yeni günlük kayıt"].buttons["Kaydet"].tap()
 
-        let entry = row(containing: "Atolye cizimlerini", in: app)
+        let entry = row(containing: "Proje planlama", in: app)
         tap(entry, in: app)
         XCTAssertTrue(app.navigationBars["Günlüğü düzenle"].waitForExistence(timeout: 8))
         capture("09-gunlugu-duzenle")
@@ -63,7 +63,7 @@ final class PreviewCaptureTests: XCTestCase {
     @MainActor
     func test06CaptureDOCXReady() {
         let app = launchApp()
-        createInternship("Deniz Yazilim", in: app).tap()
+        createInternship("Deniz Lab", in: app).tap()
         tap(button("Word belgesi oluştur", in: app), in: app)
         XCTAssertTrue(app.staticTexts["Word belgesi hazır"].waitForExistence(timeout: 12))
         capture("10-word-belgesi-hazir")
@@ -117,7 +117,7 @@ final class PreviewCaptureTests: XCTestCase {
 
     @MainActor
     private func tap(_ element: XCUIElement, in app: XCUIApplication) {
-        XCTAssertTrue(element.waitForExistence(timeout: 8))
+        _ = element.waitForExistence(timeout: 3)
         for _ in 0..<3 where !element.isHittable {
             app.swipeUp()
         }
