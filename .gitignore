@@ -1,0 +1,15 @@
+.build/
+.swiftpm/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+.DS_Store
+
+# Local App Store materials and signing configuration.
+/PRIVACY.md
+/docs/APP_STORE.md
+/Resources/StajDefteri/PrivacyInfo.xcprivacy
+/Resources/StajDefteri/Release.local.xcconfig
+*.mobileprovision
+*.p12
+*.p8

@@ -1,0 +1,83 @@
+name: iOS checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: macos-26
+    timeout-minutes: 25
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Show Xcode and SDK versions
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Run Swift package tests
+        run: swift test
+
+      - name: Build and inspect unsigned iOS Release archive
+        run: |
+          archive="$RUNNER_TEMP/StajDefteri.xcarchive"
+          xcodebuild archive \
+            -project StajDefteri.xcodeproj \
+            -scheme StajDefteri \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$archive" \
+            -derivedDataPath "$RUNNER_TEMP/staj-device-build" \
+            CODE_SIGNING_ALLOWED=NO
+
+          app="$archive/Products/Applications/StajDefteri.app"
+          plutil -lint "$app/Info.plist"
+          if [[ -f "$app/PrivacyInfo.xcprivacy" ]]; then
+            plutil -lint "$app/PrivacyInfo.xcprivacy"
+          fi
+          test -f "$app/Assets.car"
+
+      - name: Build and launch on iPhone 17 Simulator
+        run: |
+          device="$(xcrun simctl list -j devices available | jq -er '
+            .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
+            | map(select(.name == "iPhone 17" and .isAvailable))
+            | first | .udid
+          ')"
+          build="$RUNNER_TEMP/staj-simulator-build"
+          xcodebuild build \
+            -project StajDefteri.xcodeproj \
+            -scheme StajDefteri \
+            -configuration Debug \
+            -destination "platform=iOS Simulator,id=$device" \
+            -derivedDataPath "$build" \
+            CODE_SIGN_IDENTITY=-
+
+          app="$build/Build/Products/Debug-iphonesimulator/StajDefteri.app"
+          bundle_id="$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Info.plist")"
+          xcrun simctl bootstatus "$device" -b
+          xcrun simctl install "$device" "$app"
+          launch_result="$(xcrun simctl launch "$device" "$bundle_id")"
+          printf '%s\n' "$launch_result"
+          pid=${launch_result##*: }
+          [[ "$pid" =~ ^[0-9]+$ ]]
+          sleep 5
+          kill -0 "$pid"
+          xcrun simctl terminate "$device" "$bundle_id"

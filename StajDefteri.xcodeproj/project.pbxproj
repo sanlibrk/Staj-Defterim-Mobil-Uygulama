@@ -1,0 +1,255 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5DE100000000000000000011 /* StajDefteriApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000021 /* StajDefteriApp.swift */; };
+		5DE100000000000000000012 /* JournalViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000022 /* JournalViews.swift */; };
+		5DE100000000000000000013 /* JournalEditors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000023 /* JournalEditors.swift */; };
+		5DE100000000000000000014 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000024 /* PhotoPicker.swift */; };
+		5DE100000000000000000015 /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000025 /* ExportView.swift */; };
+		5DE100000000000000000017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE100000000000000000028 /* Assets.xcassets */; };
+		5DE100000000000000000018 /* StajDefteriCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5DE100000000000000000081 /* StajDefteriCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5DE100000000000000000021 /* StajDefteriApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StajDefteriApp.swift; sourceTree = "<group>"; };
+		5DE100000000000000000022 /* JournalViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViews.swift; sourceTree = "<group>"; };
+		5DE100000000000000000023 /* JournalEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEditors.swift; sourceTree = "<group>"; };
+		5DE100000000000000000024 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
+		5DE100000000000000000025 /* ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportView.swift; sourceTree = "<group>"; };
+		5DE100000000000000000026 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DE100000000000000000027 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		5DE100000000000000000028 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5DE100000000000000000029 /* StajDefteri.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StajDefteri.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5DE100000000000000000042 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (5DE100000000000000000018 /* StajDefteriCore in Frameworks */);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5DE100000000000000000031 = {
+			isa = PBXGroup;
+			children = (
+				5DE100000000000000000032 /* App */,
+				5DE100000000000000000033 /* Resources */,
+				5DE100000000000000000034 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5DE100000000000000000032 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				5DE100000000000000000021 /* StajDefteriApp.swift */,
+				5DE100000000000000000022 /* JournalViews.swift */,
+				5DE100000000000000000023 /* JournalEditors.swift */,
+				5DE100000000000000000024 /* PhotoPicker.swift */,
+				5DE100000000000000000025 /* ExportView.swift */,
+			);
+			name = App;
+			path = Sources/StajDefteriApp;
+			sourceTree = "<group>";
+		};
+		5DE100000000000000000033 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5DE100000000000000000026 /* Info.plist */,
+				5DE100000000000000000027 /* Release.xcconfig */,
+				5DE100000000000000000028 /* Assets.xcassets */,
+			);
+			name = Resources;
+			path = Resources/StajDefteri;
+			sourceTree = "<group>";
+		};
+		5DE100000000000000000034 /* Products */ = {
+			isa = PBXGroup;
+			children = (5DE100000000000000000029 /* StajDefteri.app */);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5DE100000000000000000051 /* StajDefteri */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5DE100000000000000000072 /* Build configuration list for PBXNativeTarget "StajDefteri" */;
+			buildPhases = (
+				5DE100000000000000000041 /* Sources */,
+				5DE100000000000000000042 /* Frameworks */,
+				5DE100000000000000000043 /* Resources */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = StajDefteri;
+			packageProductDependencies = (5DE100000000000000000081 /* StajDefteriCore */);
+			productName = StajDefteri;
+			productReference = 5DE100000000000000000029 /* StajDefteri.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5DE100000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					5DE100000000000000000051 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 5DE100000000000000000071 /* Build configuration list for PBXProject "StajDefteri" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = tr;
+			hasScannedForEncodings = 0;
+			knownRegions = (tr, Base);
+			mainGroup = 5DE100000000000000000031;
+			packageReferences = (5DE100000000000000000080 /* XCLocalSwiftPackageReference "." */);
+			productRefGroup = 5DE100000000000000000034 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (5DE100000000000000000051 /* StajDefteri */);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5DE100000000000000000043 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DE100000000000000000017 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5DE100000000000000000041 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DE100000000000000000011 /* StajDefteriApp.swift in Sources */,
+				5DE100000000000000000012 /* JournalViews.swift in Sources */,
+				5DE100000000000000000013 /* JournalEditors.swift in Sources */,
+				5DE100000000000000000014 /* PhotoPicker.swift in Sources */,
+				5DE100000000000000000015 /* ExportView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5DE100000000000000000061 /* Project Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5DE100000000000000000062 /* Project Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5DE100000000000000000063 /* Target Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/StajDefteri/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sanlibrk.stajdefteri;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5DE100000000000000000064 /* Target Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5DE100000000000000000027 /* Release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/StajDefteri/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sanlibrk.stajdefteri;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5DE100000000000000000071 /* Build configuration list for PBXProject "StajDefteri" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (5DE100000000000000000061, 5DE100000000000000000062);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5DE100000000000000000072 /* Build configuration list for PBXNativeTarget "StajDefteri" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (5DE100000000000000000063, 5DE100000000000000000064);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		5DE100000000000000000080 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ".";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5DE100000000000000000081 /* StajDefteriCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5DE100000000000000000080 /* XCLocalSwiftPackageReference "." */;
+			productName = StajDefteriCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+	};
+	rootObject = 5DE100000000000000000001 /* Project object */;
+}

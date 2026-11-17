@@ -1,0 +1,2 @@
+// Distribution URLs can be supplied in the local, ignored configuration.
+#include? "Release.local.xcconfig"
