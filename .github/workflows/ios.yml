@@ -10,22 +10,22 @@ permissions:
 
 jobs:
   capture:
-    runs-on: macos-26
+    runs-on: macos-15
     timeout-minutes: 20
     env:
-      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Start iPhone 17 simulator
+      - name: Start iPhone 16 simulator
         shell: bash
         run: |
           device="$(xcrun simctl list -j devices available | jq -er '
-            .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-5"]
-            | map(select(.name == "iPhone 17" and .isAvailable))
+            .devices["com.apple.CoreSimulator.SimRuntime.iOS-26-2"]
+            | map(select(.name == "iPhone 16" and .isAvailable))
             | first | .udid
           ')"
           echo "DEVICE=$device" >> "$GITHUB_ENV"

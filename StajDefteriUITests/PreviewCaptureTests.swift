@@ -2,50 +2,132 @@ import XCTest
 
 final class PreviewCaptureTests: XCTestCase {
     @MainActor
-    func testCaptureJournalScreens() {
-        continueAfterFailure = false
+    func test01CaptureHomeAndNewInternship() {
+        let app = launchApp()
+        if app.staticTexts["Henüz staj yok"].waitForExistence(timeout: 5) {
+            capture("01-staj-listesi-bos")
+        }
+        openNewInternship(in: app)
+        capture("02-yeni-staj-formu")
+    }
 
+    @MainActor
+    func test02CapturePrivacy() {
+        let app = launchApp()
+        tap(button("Gizlilik", in: app), in: app)
+        XCTAssertTrue(app.navigationBars["Gizlilik"].waitForExistence(timeout: 8))
+        capture("03-gizlilik")
+    }
+
+    @MainActor
+    func test03CaptureInternshipListDetailAndEdit() {
+        let app = launchApp()
+        let internship = createInternship("Mavi Lab", in: app)
+        capture("04-staj-listesi")
+        internship.tap()
+        let edit = button("Staj bilgilerini düzenle", in: app)
+        XCTAssertTrue(edit.waitForExistence(timeout: 8))
+        capture("05-staj-ayrintilari")
+        tap(edit, in: app)
+        XCTAssertTrue(app.navigationBars["Stajı düzenle"].waitForExistence(timeout: 8))
+        capture("06-staji-duzenle")
+    }
+
+    @MainActor
+    func test04CaptureNewDailyEntry() {
+        let app = launchApp()
+        createInternship("Ada Teknik", in: app).tap()
+        openNewEntry(in: app)
+        capture("07-yeni-gunluk-kayit")
+        app.swipeUp()
+        if button("Fotoğraf seç", in: app).exists {
+            capture("08-gunluk-fotograf-alanlari")
+        }
+    }
+
+    @MainActor
+    func test05CaptureEditDailyEntry() {
+        let app = launchApp()
+        createInternship("Kuzey Tasarim", in: app).tap()
+        openNewEntry(in: app)
+        let sample = "Atolye cizimlerini inceledim."
+        enter(sample, into: app.textViews.firstMatch, in: app)
+        app.navigationBars["Yeni günlük kayıt"].buttons["Kaydet"].tap()
+
+        let entry = row(containing: "Atolye cizimlerini", in: app)
+        tap(entry, in: app)
+        XCTAssertTrue(app.navigationBars["Günlüğü düzenle"].waitForExistence(timeout: 8))
+        capture("09-gunlugu-duzenle")
+    }
+
+    @MainActor
+    func test06CaptureDOCXReady() {
+        let app = launchApp()
+        createInternship("Deniz Yazilim", in: app).tap()
+        tap(button("Word belgesi oluştur", in: app), in: app)
+        XCTAssertTrue(app.staticTexts["Word belgesi hazır"].waitForExistence(timeout: 12))
+        capture("10-word-belgesi-hazir")
+    }
+
+    @MainActor
+    private func launchApp() -> XCUIApplication {
+        continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments += ["-AppleLanguages", "(tr)", "-AppleLocale", "tr_TR"]
         app.launch()
+        XCTAssertTrue(app.navigationBars["Staj Defteri"].waitForExistence(timeout: 15))
+        return app
+    }
 
-        XCTAssertTrue(app.staticTexts["Henüz staj yok"].waitForExistence(timeout: 15))
-        capture("01-staj-listesi-bos")
+    @MainActor
+    private func openNewInternship(in app: XCUIApplication) {
+        tap(button("Staj ekle", in: app), in: app)
+        XCTAssertTrue(app.navigationBars["Yeni staj"].waitForExistence(timeout: 8))
+    }
 
-        let addInternship = app.buttons.matching(identifier: "Staj ekle").firstMatch
-        XCTAssertTrue(addInternship.waitForExistence(timeout: 5))
-        addInternship.tap()
-
-        XCTAssertTrue(app.navigationBars["Yeni staj"].waitForExistence(timeout: 5))
-        capture("02-yeni-staj-formu")
-
+    @MainActor
+    private func createInternship(_ workplace: String, in app: XCUIApplication) -> XCUIElement {
+        openNewInternship(in: app)
         enter("Deniz Kaya", into: app.textFields["Ad soyad"], in: app)
-        enter("Mavi Lab", into: app.textFields["Staj yeri"], in: app)
+        enter(workplace, into: app.textFields["Staj yeri"], in: app)
         app.navigationBars["Yeni staj"].buttons["Kaydet"].tap()
+        return row(containing: workplace, in: app)
+    }
 
-        let internshipButton = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Mavi Lab")).firstMatch
-        let internshipText = app.staticTexts["Mavi Lab"]
-        let internship = internshipButton.waitForExistence(timeout: 6) ? internshipButton : internshipText
-        XCTAssertTrue(internship.waitForExistence(timeout: 6))
-        capture("03-staj-listesi")
+    @MainActor
+    private func openNewEntry(in app: XCUIApplication) {
+        tap(button("Günlük kayıt ekle", in: app), in: app)
+        XCTAssertTrue(app.navigationBars["Yeni günlük kayıt"].waitForExistence(timeout: 8))
+    }
 
-        internship.tap()
-        let addEntry = app.buttons["Günlük kayıt ekle"]
-        XCTAssertTrue(addEntry.waitForExistence(timeout: 8))
-        capture("04-staj-ayrintilari")
+    @MainActor
+    private func button(_ title: String, in app: XCUIApplication) -> XCUIElement {
+        app.buttons.matching(identifier: title).firstMatch
+    }
 
-        addEntry.tap()
-        XCTAssertTrue(app.navigationBars["Yeni günlük kayıt"].waitForExistence(timeout: 5))
-        capture("05-gunluk-kayit-formu")
+    @MainActor
+    private func row(containing text: String, in app: XCUIApplication) -> XCUIElement {
+        let predicate = NSPredicate(format: "label CONTAINS %@", text)
+        let matchingButton = app.buttons.matching(predicate).firstMatch
+        if matchingButton.waitForExistence(timeout: 4) { return matchingButton }
+        let matchingText = app.staticTexts.matching(predicate).firstMatch
+        XCTAssertTrue(matchingText.waitForExistence(timeout: 6))
+        return matchingText
+    }
+
+    @MainActor
+    private func tap(_ element: XCUIElement, in app: XCUIApplication) {
+        XCTAssertTrue(element.waitForExistence(timeout: 8))
+        for _ in 0..<3 where !element.isHittable {
+            app.swipeUp()
+        }
+        XCTAssertTrue(element.isHittable)
+        element.tap()
     }
 
     @MainActor
     private func enter(_ text: String, into field: XCUIElement, in app: XCUIApplication) {
-        for _ in 0..<3 where !field.isHittable {
-            app.swipeUp()
-        }
-        XCTAssertTrue(field.isHittable)
-        field.tap()
+        tap(field, in: app)
         field.typeText(text)
     }
 
