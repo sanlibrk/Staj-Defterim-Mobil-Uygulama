@@ -8,7 +8,6 @@ xcuserdata/
 # Local App Store materials and signing configuration.
 /PRIVACY.md
 /docs/APP_STORE.md
-/Resources/StajDefteri/PrivacyInfo.xcprivacy
 /Resources/StajDefteri/Release.local.xcconfig
 *.mobileprovision
 *.p12

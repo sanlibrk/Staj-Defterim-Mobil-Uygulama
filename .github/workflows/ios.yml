@@ -49,9 +49,9 @@ jobs:
 
           app="$archive/Products/Applications/StajDefteri.app"
           plutil -lint "$app/Info.plist"
-          if [[ -f "$app/PrivacyInfo.xcprivacy" ]]; then
-            plutil -lint "$app/PrivacyInfo.xcprivacy"
-          fi
+          plutil -lint "$app/PrivacyInfo.xcprivacy"
+          test "$(/usr/libexec/PlistBuddy -c 'Print ITSAppUsesNonExemptEncryption' "$app/Info.plist")" = false
+          test "$(/usr/libexec/PlistBuddy -c 'Print NSPrivacyTracking' "$app/PrivacyInfo.xcprivacy")" = false
           test -f "$app/Assets.car"
 
       - name: Build and launch on iPhone 17 Simulator
