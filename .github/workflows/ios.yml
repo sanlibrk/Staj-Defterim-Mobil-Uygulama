@@ -2,7 +2,7 @@ name: App Store screenshots
 
 on:
   push:
-    branches: [codex/ios-preview]
+    branches: [codex/app-store-pro-max]
   workflow_dispatch:
 
 permissions:
@@ -20,7 +20,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Select and boot the iPhone and iPad simulators
+      - name: Select and boot the iPhone 17 Pro Max simulator
         run: |
           device_for() {
             xcrun simctl list -j devices available | jq -er --arg name "$1" '
@@ -29,10 +29,8 @@ jobs:
               | first | .udid
             '
           }
-          iphone="$(device_for 'iPhone 17')"
-          ipad="$(device_for 'iPad Pro 13-inch (M5)')"
+          iphone="$(device_for 'iPhone 17 Pro Max')"
           echo "IPHONE=$iphone" >> "$GITHUB_ENV"
-          echo "IPAD=$ipad" >> "$GITHUB_ENV"
           xcrun simctl boot "$iphone"
 
       - name: Build app and verify actual in-app captures
@@ -90,6 +88,9 @@ jobs:
               if "$RUNNER_TEMP/verify-capture" "$candidate"; then
                 mv "$candidate" "$output/$filename"
                 sips -g pixelWidth -g pixelHeight -g hasAlpha "$output/$filename"
+                local size
+                size="$(sips -g pixelWidth -g pixelHeight "$output/$filename" | awk '/pixel(Width|Height):/ {printf "%s ", $2}')"
+                [[ "$size" == "1320 2868 " ]]
                 return
               fi
             done
@@ -99,17 +100,11 @@ jobs:
             return 1
           }
 
-          status=0
-          capture "$IPHONE" Staj-Defteri-iPhone-17.png || status=1
-          xcrun simctl shutdown "$IPHONE"
-          xcrun simctl boot "$IPAD"
-          capture "$IPAD" Staj-Defteri-iPad-13.png || status=1
-          exit "$status"
+          capture "$IPHONE" Staj-Defteri-iPhone-17-Pro-Max.png
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
         with:
-          name: staj-defteri-app-store-screens
+          name: staj-defteri-iphone-17-pro-max
           path: ${{ runner.temp }}/staj-store/*.png
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 7
